@@ -65,11 +65,12 @@ class RoutingService {
     this.onRouteNotFound = () => {};
     this.history = createHistory();
 
-    this.history.listen(location => {
-      this.onLocationChange(location);
+    this.history.listen((location, action) => {
+      // action is one of PUSH, REPLACE, POP
+      this.onLocationChange(location, action);
     });
   }
-  onLocationChange(location) {
+  onLocationChange(location, action) {
     let matchedRoute = null;
     this.routes.some(route => {
       const pathData = matchRoute(route.pattern, location);
@@ -80,9 +81,9 @@ class RoutingService {
       return false;
     });
     if (matchedRoute === null) {
-      this.onRouteNotFound();
+      this.onRouteNotFound(action);
     } else {
-      matchedRoute.onVisit(matchedRoute.data);
+      matchedRoute.onVisit(matchedRoute.data, action);
     }
   }
   addFallback(onRouteNotFound) {
@@ -90,7 +91,7 @@ class RoutingService {
     // chain
     return this;
   }
-  add(shorthand, route, onVisit = () => {}) {
+  addRoute(shorthand, route, onVisit = () => {}) {
     this.routes.push({
       shorthand,
       pattern: route,
@@ -126,8 +127,17 @@ class RoutingService {
     this.routes = [];
     this.onRouteNotFound = () => {};
   }
-  goto(url) {
+  setURL(url) {
     this.history.push(url);
+  }
+  replaceURL(url) {
+    this.history.replace(url);
+  }
+  setLocation(shorthand, routeData) {
+    this.setURL(this.composeURL(shorthand, routeData));
+  }
+  replaceLocation(shorthand, routeData) {
+    this.replaceURL(this.composeURL(shorthand, routeData));
   }
 }
 
