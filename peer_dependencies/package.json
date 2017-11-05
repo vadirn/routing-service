@@ -1,0 +1,11 @@
+{
+  "name": "peer_dependencies",
+  "version": "0.0.0",
+  "description": "",
+  "main": "",
+  "scripts": {},
+  "dependencies": {
+    "history": "^4.7.2",
+    "object-state-storage": "^3.2.0"
+  }
+}
