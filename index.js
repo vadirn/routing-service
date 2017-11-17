@@ -30,9 +30,10 @@ export const composeQuery = query => {
 };
 
 export const decomposePath = pathname => {
+  const decPathname = decodeURIComponent(pathname);
   let path = '';
-  if (pathname[0] === '/') {
-    path = pathname.slice(1);
+  if (decPathname[0] === '/') {
+    path = decPathname.slice(1);
   }
   return path.split('/');
 };
