@@ -87,7 +87,7 @@ class RoutingService {
       matchedRoute.onVisit(matchedRoute.data, action);
     }
   }
-  addFallback(onRouteNotFound) {
+  add404(onRouteNotFound) {
     this.onRouteNotFound = onRouteNotFound;
     // chain
     return this;
@@ -142,6 +142,8 @@ class RoutingService {
   }
 }
 
-const routingService = new RoutingService();
+if (!window.routingService) {
+  window.routingService = new RoutingService();
+}
 
-export default routingService;
+export default window.routingService;
